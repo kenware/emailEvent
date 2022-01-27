@@ -11,6 +11,11 @@ provider:
   region: ${env:REGION}
   environment:
     TOPIC_ARN: {"Ref": "SNSTopic"}
+    SNS_TOPIC_NAME: ${env:SNS_TOPIC_NAME}
+    EMAIL_SUBSCRIBER: ${env:EMAIL_SUBSCRIBER}
+    EMAIL_EVENT_TABLE_NAME: ${env:EMAIL_EVENT_TABLE_NAME}
+    REGION: ${env:REGION}
+    MAILGUN_WEBHOOK_SIGNIN_KEY: ${env:MAILGUN_WEBHOOK_SIGNIN_KEY}
   iamRoleStatements:
     - Effect: Allow
       Action:

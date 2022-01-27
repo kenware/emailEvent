@@ -26,7 +26,8 @@ export default class EmailLead {
         signature: signature.signature
       });
 
-      await emailEvent.save();
+      const reponse = await emailEvent.save();
+      logger.info(reponse)
       const sns = new Config.AWS.SNS()
 
       logger.info(process.env.TOPIC_ARN);

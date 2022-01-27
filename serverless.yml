@@ -1,0 +1,97 @@
+
+service: email-feedback
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  profile: bant
+  region: ${env:REGION}
+  environment:
+    TOPIC_ARN: {"Ref": "SNSTopic"}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - sns:Publish
+      Resource: "*"
+
+plugins:
+ - serverless-plugin-typescript-express
+ - serverless-offline
+ - serverless-apigw-binary
+ - serverless-dotenv-plugin
+
+custom:
+  apigwBinary:
+    types:
+      - '*/*'
+
+functions:
+  server:
+    handler: src/handler.server
+    events:
+      - http:
+          path: /
+          method: ANY
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Accept
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors:
+            origin: '*' 
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Accept
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+
+resources:
+  Resources:
+    EmailEventTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: eventId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: eventId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${env:EMAIL_EVENT_TABLE_NAME}
+    
+    SNSTopic:
+       Type: AWS::SNS::Topic
+       Properties:
+         DisplayName: SNS Topic
+         TopicName: ${env:SNS_TOPIC_NAME}
+    
+    SNSSubscription:
+      Type: AWS::SNS::Subscription
+      Properties:
+        Endpoint: ${env:EMAIL_SUBSCRIBER}
+        Protocol: email
+        TopicArn: {"Ref": "SNSTopic"}

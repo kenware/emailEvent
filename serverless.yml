@@ -8,6 +8,7 @@ frameworkVersion: '2'
 provider:
   name: aws
   runtime: nodejs12.x
+  profile: bant
   region: ${env:REGION}
   environment:
     TOPIC_ARN: {"Ref": "SNSTopic"}
@@ -37,7 +38,7 @@ custom:
 
 functions:
   server:
-    handler: src/handler.server
+    handler: src/src/handler.server
     events:
       - http:
           path: /

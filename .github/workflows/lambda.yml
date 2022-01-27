@@ -20,7 +20,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - name: serverless deploy
-      uses: serverless/github-action@v1.48.2
+      uses: serverless/github-action@v2.1.0
       with:
         args: deploy
       env:

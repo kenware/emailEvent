@@ -11,6 +11,9 @@ const EmailEvent = Config.DB.define(process.env.EMAIL_EVENT_TABLE_NAME, {
     provider: Joi.string(),
     token: Joi.string(),
     signature: Joi.string(),
+    recipientEmail: Joi.string(),
+    messageSubject: Joi.string(),
+    senderEmail: Joi.string(),
   }
 });
 

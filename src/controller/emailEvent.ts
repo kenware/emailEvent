@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { v4 as uuidv4 } from 'uuid'
 
 import Handler from '../utils/handler';
 import logger from '../utils/logger';
@@ -13,17 +14,20 @@ export default class EmailLead {
   * @param {res} ctx.response
   */
   static async emailEvent(req: Request, res: Response) {
-    logger.info(req.body['event-data'])
     try {
       const eventData = req.body['event-data'];
-      const { signature } = req.body;
+      const { signature, recipient, message } = req.body;
       const emailEvent = new Models.EmailEvent({
-        eventId: eventData.id,
+        eventId: uuidv4(),
+        emailEventId: eventData.id,
         provider: 'Mailgun',
         type: eventData.event,
         emailTimestamp: eventData.timestamp,
         token: signature.token,
-        signature: signature.signature
+        signature: signature.signature,
+        recipientEmail: recipient,
+        messageSubject: message?.headers?.subject,
+        senderEmail: message?.headers?.from
       });
 
       const reponse = await emailEvent.save();

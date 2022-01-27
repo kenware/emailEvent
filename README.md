@@ -7,6 +7,7 @@ This app receives an event from mailgun, saves it on AWS DynamoDB and publishes 
 - Express/typescript
 - DynamoDB
 - SNS
+- CI/CD - github action
 - Mocha and chai - integration testing
 
 ## Local Deployment steps.
@@ -15,7 +16,7 @@ This app receives an event from mailgun, saves it on AWS DynamoDB and publishes 
 - Ensure serverless is installed - `npm i serverless -g`
 - In the project root, create a `.env` file and add the following environmental variables.
 ```
-SNS_TOPIC_NAME=<new-sns-topic-name-to-create-by-serverless>
+SNS_TOPIC_NAME=<sns-topic-name>
 EMAIL_SUBSCRIBER=<email-address-to-subscriber>
 EMAIL_EVENT_TABLE_NAME=<dynamoDb-email-event-table-name>
 REGION=<aws-region>

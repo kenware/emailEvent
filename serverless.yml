@@ -55,6 +55,19 @@ functions:
               - X-Api-Key
               - X-Amz-Security-Token
               - X-Amz-User-Agent
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors:
+            origin: '*' 
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - Accept
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
 
 resources:
   Resources:

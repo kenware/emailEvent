@@ -8,7 +8,6 @@ frameworkVersion: '2'
 provider:
   name: aws
   runtime: nodejs12.x
-  profile: bant
   region: ${env:REGION}
   environment:
     TOPIC_ARN: {"Ref": "SNSTopic"}

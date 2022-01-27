@@ -8,7 +8,6 @@ frameworkVersion: '2'
 provider:
   name: aws
   runtime: nodejs12.x
-  region: ${self:environment.REGION}
   environment:
     TOPIC_ARN: {"Ref": "SNSTopic"}
     SNS_TOPIC_NAME: ${env:SNS_TOPIC_NAME}

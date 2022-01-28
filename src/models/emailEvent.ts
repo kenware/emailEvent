@@ -7,6 +7,7 @@ const EmailEvent = Config.DB.define(process.env.EMAIL_EVENT_TABLE_NAME, {
   schema: {
     type: Joi.string(),
     eventId: Joi.string(),
+    emailEventId: Joi.string(),
     emailTimestamp: Joi.number(),
     provider: Joi.string(),
     token: Joi.string(),
